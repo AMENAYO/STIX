@@ -35,10 +35,11 @@ function createObject(){
   const shape=document.getElementById('shape').value;
   const size=parseInt(document.getElementById('size').value)||50;
   const color=document.getElementById('color').value;
+  const script=document.getElementById('script').value || "";
   let data=getData();
   if(!data[loggedUser]) data[loggedUser]={};
   const id='obj_'+Date.now();
-  data[loggedUser][id]={shape,size,color,x:50,y:50};
+  data[loggedUser][id]={shape,size,color,x:50,y:50,script};
   saveData(data);
   document.getElementById('output').innerText="Object created / Objet créé: "+id;
   drawWorld();
@@ -51,7 +52,7 @@ function listObjects(){
   let text='';
   for(const id in objs){ 
     const o=objs[id];
-    text+=id+' : '+o.shape+' / '+o.size+' / '+o.color+' / x:'+o.x+' y:'+o.y+'\n'; 
+    text+=id+' : '+o.shape+' / '+o.size+' / '+o.color+' / x:'+o.x+' y:'+o.y+' / script:'+o.script+'\n'; 
   }
   document.getElementById('output').innerText=text||"No objects / Aucun objet";
   drawWorld();
@@ -109,33 +110,31 @@ function moveObject(e){
 canvas.addEventListener('mouseup',()=>{ dragging=false; selectedObject=null; });
 
 // ======= Save / Load World =========
-function saveWorld(){
-  if(!loggedUser){ alert("Login first / Connectez-vous d'abord"); return; }
-  document.getElementById('output').innerText="World saved / Monde sauvegardé";
-}
+function saveWorld(){ if(!loggedUser){ alert("Login first"); return; } document.getElementById('output').innerText="World saved / Monde sauvegardé"; }
+function loadWorld(){ if(!loggedUser) return; drawWorld(); document.getElementById('output').innerText="World loaded / Monde chargé"; }
 
-function loadWorld(){
-  if(!loggedUser) return;
-  drawWorld();
-  document.getElementById('output').innerText="World loaded / Monde chargé";
-}
-
-// ======= Play World (simple animation) =========
+// ======= Play World with scripts =========
 function playWorld(){
   if(!loggedUser){ alert("Login first / Connectez-vous d'abord"); return; }
   let data=getData();
   const objs=data[loggedUser]||{};
   let angle=0;
+
   function animate(){
     angle+=0.05;
     ctx.clearRect(0,0,canvas.width,canvas.height);
     for(const id in objs){
       const o=objs[id];
-      const x = o.x + 10*Math.sin(angle + parseInt(id.slice(4)));
-      const y = o.y + 10*Math.cos(angle + parseInt(id.slice(4)));
+      let x=o.x;
+      let y=o.y;
+      // Mini scripting: move randomly or with sine waves
+      try{
+        if(o.script) eval(o.script);
+      }catch(err){ console.log("Script error:", err); }
       ctx.fillStyle=o.color;
       if(o.shape==='cube') ctx.fillRect(x,y,o.size,o.size);
       else if(o.shape==='sphere') ctx.beginPath(),ctx.arc(x+o.size/2,y+o.size/2,o.size/2,0,2*Math.PI),ctx.fill();
+      o.x=x; o.y=y;
     }
     requestAnimationFrame(animate);
   }
