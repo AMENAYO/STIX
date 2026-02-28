@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>STIX Prototype</title>
+  <title>STIX Prototype v2</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1>🚀 STIX Prototype</h1>
+<h1>🚀 STIX Prototype v2</h1>
 
 <h2>Register / Inscription</h2>
 <input id="regUser" placeholder="Username / Nom">
@@ -24,10 +24,15 @@
   <option value="sphere">Sphere</option>
 </select>
 <input id="size" type="number" placeholder="Size / Taille" value="50">
+<input type="color" id="color" value="#FFFF00">
 <button onclick="createObject()">Create / Créer</button>
 
-<h2>Your World / Votre monde</h2>
+<h2>World / Monde</h2>
 <button onclick="listObjects()">List / Lister</button>
+<button onclick="saveWorld()">Save / Sauvegarder</button>
+<button onclick="loadWorld()">Load / Charger</button>
+<button onclick="playWorld()">Play / Jouer</button>
+
 <pre id="output"></pre>
 <canvas id="world" width="600" height="400"></canvas>
 
