@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>STIX Prototype</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<h1>🚀 STIX Prototype</h1>
+
+<h2>Register / Inscription</h2>
+<input id="regUser" placeholder="Username / Nom">
+<input id="regPass" placeholder="Password / Mot de passe" type="password">
+<button onclick="register()">Register / Inscription</button>
+
+<h2>Login / Connexion</h2>
+<input id="username" placeholder="Username / Nom">
+<input id="password" placeholder="Password / Mot de passe" type="password">
+<button onclick="login()">Login / Connexion</button>
+
+<h2>Create Object / Créer un objet</h2>
+<select id="shape">
+  <option value="cube">Cube</option>
+  <option value="sphere">Sphere</option>
+</select>
+<input id="size" type="number" placeholder="Size / Taille" value="50">
+<button onclick="createObject()">Create / Créer</button>
+
+<h2>Your World / Votre monde</h2>
+<button onclick="listObjects()">List / Lister</button>
+<pre id="output"></pre>
+<canvas id="world" width="600" height="400"></canvas>
+
+<script src="js/stix.js"></script>
+</body>
+</html>
